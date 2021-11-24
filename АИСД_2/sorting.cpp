@@ -10,18 +10,17 @@ int benary_search(int* array, int right, int number)  //Binary search
 	int left = 0;
 	right = right;
 	mid = (right + left) / 2;
-	while (1)
+	while (number != array[mid])         //If the entered value was found
 	{
 		if (number < array[mid])
 	        right = mid - 1;
 		else if (number > array[mid])
 			left = mid + 1;
-		else if (number == array[mid])         //If the entered value was found
-			return mid;
 		mid = (right + left) / 2;
 		if ((mid == right) && (right == left) && (number != array[mid]))   //If the entered value was not found
 			throw "The given value is not in the array.";
 	}
+	return mid;
 }
  
 void quicksort(int* array, int right, int left)       //Quick search
@@ -74,9 +73,24 @@ void InsertionSort(int* array, int right)       // Insertion Sort
 void bogosort(int* array, int size)      //BogoSort
 {
 	bool correct = false;
-	int size_count,count, temp, random;
-	while (1)
+	int size_count, count, temp, random;
+	size_count = size;
+	correct = true;
+	while (size_count > 0)            //Checking an array for sortedness
 	{
+		if (array[size_count - 1] > array[size_count])
+			correct = false;
+		size_count--;
+	}
+	while (correct != true)
+	{
+		for (count = 0; count <= size; count++)   //Random shuffling of array elements
+		{
+			temp = array[count];
+			random = rand() % size;
+			array[count] = array[random];
+			array[random] = temp;
+		}
 		size_count = size;
 		correct = true;
 		while (size_count > 0)            //Checking an array for sortedness
@@ -84,15 +98,6 @@ void bogosort(int* array, int size)      //BogoSort
 			if (array[size_count - 1] > array[size_count])
 				correct = false;
 			size_count--;
-		}
-		if (correct == true)
-			break;
-		for (count = 0; count <= size; count++)   //Random shuffling of array elements
-		{
-			temp = array[count];
-			random = rand() % size;
-			array[count] = array[random];
-			array[random] = temp;
 		}
 	}
 }
@@ -105,14 +110,15 @@ void CountingSort(char* array, int size)          //Counting Sort
 	for (count = 0; count < size; count++)        //Finding the maximum value of an array
 		if (array[count] > max)
 			max = array[count];
-	int* arrayleight = new int[max + 1];       //Creating an array with the dimension of the found maximum value
-	for (count = 0; count <= max; count++)      //array initialization
+	max = max + 1;
+	int* arrayleight = new int[max];       //Creating an array with the dimension of the found maximum value
+	for (count = 0; count < max; count++)      //array initialization
 		arrayleight[count] = 0;
 	for (count = 0; count <= size; count++)
 	{
 		arrayleight[array[count]]++;
 	}
-	for (count = 0; count <= max; count++)         //Writing to the original array of sorted data
+	for (count = 0; count < max; count++)         //Writing to the original array of sorted data
 	{
 
 		for (count_2 = 0; count_2 < arrayleight[count]; count_2++)
